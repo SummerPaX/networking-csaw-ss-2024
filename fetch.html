@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Fetch API Example</title>
+</head>
+
+<body>
+  <pre id="response"></pre>
+</body>
+<script>
+  const pre = document.getElementById('response')
+
+  // ein Request Object erstellen
+  const request = new Request('https://dummyjson.com/todos', {
+    method: 'GET'
+  })
+
+  // mit fetch wird die Request (im Hintergrund) als Promise ausgeführt
+  // der Callback ( ()=>{} ) im .then wird ausgeführt 
+  // sobald fetch abgeschlossen ist
+  fetch(request).then(async (response) => {
+    console.log('response', response);
+
+    // um auf die Daten zugreifen zu können müssen wir response.json() ausführen
+    // weil das wieder ein "Promise" ist muss man await davor schreiben (oder wieder .then)
+    const data = await response.json()
+
+    console.log('data', data);
+
+    // mithilfe der map funktion können wir die Daten aus unserer response aufbereiten
+    // jedes element im Array wird einmal bearbeitet (wie bei einer for Schleife) und in
+    // ein neues Array (todoArray) hinzugefügt.
+    const todoArray = data.todos.map((val) => {
+      if (val.completed) {
+        return "Fertig: " + val.todo
+      } else {
+        return "Todo: " + val.todo
+      }
+    })
+
+    pre.innerText = JSON.stringify(todoArray, null, 2)
+  })
+</script>
+
+</html>

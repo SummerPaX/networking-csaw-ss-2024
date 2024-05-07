@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Axios Example</title>
+</head>
+
+<body>
+  <div id="response"></div>
+</body>
+<!-- To load axios in a native web app, just insert this script tag -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  const responseDiv = document.getElementById('response')
+
+  // you can create the options for fetching in a separate object or put it directly into the axios function. Example: axios({url: "https://example.org"})
+  const options = {
+    baseURL: 'https://coding-school-networking.dev.webundsoehne.com',
+    url: '/internal/statuss',
+    methode: 'get'
+  }
+
+  // axios also returns a Promise the same  as fetch, but automatically unwraps the content (eg. json) and puts it into response.data
+  axios(options)
+    .then((response) => {
+      console.log('response', response)
+      console.log('data', response.data)
+      responseDiv.innerText = JSON.stringify(response.data, null, 2)
+    })
+    .catch((exception => {
+      console.log('exception', exception)
+      responseDiv.innerText = exception.response?.data?.message ?? exception.message
+    }))
+
+  // axios also provides helper functions for the common http methods like get/put/post/... so you can also fetch data like this
+  // axios.put('https://url').then(... 
+
+</script>
+
+</html>
